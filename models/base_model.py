@@ -8,6 +8,8 @@ class BaseModel:
     """ The base class"""
     def __init__(self,*args,**kwargs):
         """Instanciation Method"""
+        for key, value in kwargs.items():
+         print(f"{key}:{value}")       
         self.id=str(uuid.uuid4())
         self.created_at= datetime.now()
         self.updated_at=self.created_at
