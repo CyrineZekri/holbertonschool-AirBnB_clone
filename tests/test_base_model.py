@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+import sys
+import os
+current_file_dir = os.path.dirname(os.path.abspath(__file__))
+project_folder = os.path.abspath(os.path.join(current_file_dir, '..'))
+sys.path.append(project_folder)
+
 from models.base_model import BaseModel
 
 my_model = BaseModel()
