@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """
-
 module that defines the Base Model
 """
 import uuid
@@ -14,6 +13,7 @@ class BaseModel:
         """Instanciation Method"""
         if kwargs:
             for key, value in kwargs.items():
+                # if user wants to enter created_at or updated_at attributes
                 if key == 'created_at' or key == 'updated_at':
                     setattr(
                         self, key, datetime.strptime(
@@ -35,8 +35,9 @@ class BaseModel:
 
     def to_dict(self):
         """converts an instance to a dictionary"""
-        obj_dict = self.__dict__.copy()
-        obj_dict["__class__"] = self.__class__.__name__
-        obj_dict["created_at"] = self.created_at.isoformat()
-        obj_dict["updated_at"] = self.updated_at.isoformat()
-        return obj_dict
+        inst_dict = self.__dict__.copy()
+        # use a copy of self.__dict
+        inst_dict["__class__"] = self.__class__.__name__
+        inst_dict["created_at"] = self.created_at.isoformat()
+        inst_dict["updated_at"] = self.updated_at.isoformat()
+        return inst_dict
