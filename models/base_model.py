@@ -4,8 +4,7 @@ module that defines the Base Model
 """
 import uuid
 from datetime import datetime
-
-
+from models import storage
 class BaseModel:
     """ The base class"""
 
@@ -24,6 +23,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
 
     def __str__(self):
         """Print method"""
@@ -32,12 +32,13 @@ class BaseModel:
     def save(self):
         """updates the updated_at attribute"""
         self.updated_at = datetime.now()
-
+        if storage:
+            storage.save()
     def to_dict(self):
         """converts an instance to a dictionary"""
-        inst_dict = self.__dict__.copy()
-        # use a copy of self.__dict
-        inst_dict["__class__"] = self.__class__.__name__
-        inst_dict["created_at"] = self.created_at.isoformat()
-        inst_dict["updated_at"] = self.updated_at.isoformat()
-        return inst_dict
+        obj_dict = self.__dict__.copy()
+        for key, value in obj_dict.items():
+            if isinstance(value, datetime):
+                obj_dict[key] = value.isoformat()
+        obj_dict['__class__'] = self.__class__.__name__
+        return obj_dict
