@@ -2,11 +2,11 @@
 """ module  that serializes and deserializes instances """
 import json
 class FileStorage:
-    __file_path=""
+    __file_path="file.json"
     __objects={}
     def all(self):
         """ returns all objects"""
-        return self.__objects
+        return FileStorage.__objects
     def new(self,obj):
         """adds a new object to the __objects() dict"""
         key=f"{obj.__class__.__name__}.{obj.id}"
@@ -17,5 +17,9 @@ class FileStorage:
             json.dump(FileStorage.__objects, json_file)
     def reload(self):
         """deserializes objects"""
-        with open(FileStorage.__file_path,"r") as json_file: 
-            FileStorage.__objects=json.load(json_file)    
+        try:
+            #do nthg if the file doesnt exist
+            with open(FileStorage.__file_path,"r") as json_file: 
+                FileStorage.__objects=json.load(json_file)
+        except FileNotFoundError:
+            pass 
