@@ -1,4 +1,3 @@
- #!/usr/bin/python3
 """the console module"""
 import cmd
 class HBNBCommand(cmd.Cmd):
