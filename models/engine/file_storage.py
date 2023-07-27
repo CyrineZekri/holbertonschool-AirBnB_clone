@@ -5,7 +5,7 @@ class FileStorage:
     __file_path="file.json"
     __objects={}
     def all(self):
-        """ returns all objects"""
+        """ returns all objects """
         return self.__objects
     def new(self,obj):
         """adds a new object to the __objects() dict"""
@@ -17,12 +17,15 @@ class FileStorage:
         for key, obj in self.__objects.items():
             new_dict[key]=obj.to_dict()
         with open(FileStorage.__file_path, "w") as f:
-            json.dump(FileStorage.__objects,f)
+            json.dump(new_dict,f)
     def reload(self):
         """deserializes objects"""
         try:
             #do nthg if the file doesnt exist
             with open(FileStorage.__file_path,"r") as f: 
-                FileStorage.__objects=json.load(f)
+                object=json.load(f.read())
+                for key, value in object.items():
+                    class_name, id=key.split('.')
+                    self.__objects[key]=eval(class_name)(**value)
         except FileNotFoundError:
             pass 
